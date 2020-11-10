@@ -30,7 +30,7 @@ defmodule Memory do
     guess = IO.gets("Guess pair: ")
             |> String.trim()
     card = GameLogic.card_at_position(memory, guess)
-    if(card == nil || card.visible == true) do
+    if(card.visible == true) do
       IO.puts("You have chosen a position which is already visible or does not exist.. Try again")
       guess_word(memory)
     end

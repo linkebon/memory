@@ -3,9 +3,9 @@ defmodule GameLogic do
     words_list = words_filename
                  |> File.read!()
                  |> String.split(~r{(\n)+})
-                 |> take_random_words_from_list(2)
+                 |> take_random_words_from_list(18)
     cards_list = Enum.map(words_list, fn word -> %Card{word: word, visible: false} end)
-    for {chunk, idx} <- Enum.with_index(Enum.chunk_every(cards_list, 2)),
+    for {chunk, idx} <- Enum.with_index(Enum.chunk_every(cards_list, 6)),
         into: %{},
         do: {
           ["A", "B", "C", "D", "E", "F"]
