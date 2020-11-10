@@ -1,29 +1,16 @@
 defmodule GameLogic do
 
-  def test() do
-    memory = read_words_from_file_into_list("memoUTF8.txt")
-             |> take_random_words_from_list(18)
-             |> generate_memory
-
-    print_memory memory
-
-    a2 = card_at_position(memory, "A2")
-    f6 = card_at_position(memory, "F6")
-    IO.puts matching_words?(memory, "F6", "F6")
-    IO.inspect(update_memory_card_visible(memory, "F6", "F6"))
-  end
-
-  def read_words_from_file_into_list(filename), do:
-    filename
-    |> File.read!()
-    |> String.split(~r{(\n)+})
-
   def generate_memory(words_list) do
     cards_list = Enum.map(words_list, fn word -> %Card{word: word, visible: false} end)
     for {chunk, idx} <- Enum.with_index(Enum.chunk_every(cards_list, 6)),
         into: %{},
         do: {["A", "B", "C", "D", "E", "F"] |> Enum.at(idx), chunk}
   end
+
+  def read_words_from_file_into_list(filename), do:
+    filename
+    |> File.read!()
+    |> String.split(~r{(\n)+})
 
   def matching_words?(memory, position1, position2),
       do: card_at_position(memory, position1).word == card_at_position(memory, position2).word
@@ -54,7 +41,6 @@ defmodule GameLogic do
     letter = String.at(pos, 0)
     number = case String.at(pos, 1)
                   |> Integer.parse() do
-      {parsed, _} -> parsed
       :error -> IO.puts("\nInvalid number provided..\n")
     end
     Enum.at(memory[letter], number - 1)
