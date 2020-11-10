@@ -18,9 +18,11 @@ defmodule GameLogic do
       do: card_at_position(memory, position1).word == card_at_position(memory, position2).word
 
   def print_memory(memory) do
+    IO.puts("\n---------------------")
     for {letter, cards_list} <- memory do
       IO.puts("#{letter} #{Enum.join(Enum.map(cards_list, &card_word_as_string/1), " ")}")
     end
+    IO.puts("---------------------\n")
   end
 
   def card_word_as_string(card) do
