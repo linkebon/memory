@@ -1,6 +1,10 @@
 defmodule Memory do
+  @moduledoc """
+  Documentation for `Memory`.
+  Module contains the game user interaction with the players
+  """
 
-  def run_memory() do
+  def start() do
     memory = GameLogic.generate_memory("memoUTF8.txt")
     guess(memory)
   end
@@ -19,7 +23,7 @@ defmodule Memory do
       memory = case GameLogic.matching_words?(memory, guess1, guess2) do
         true -> IO.puts("Correct word: #{GameLogic.card_at_position(memory, guess1).word}\n")
                 memory
-        false -> IO.puts("Wrong guess.. \n")
+        false -> IO.puts("Wrong guess.. Guess1: #{GameLogic.card_at_position(memory, guess1).word} Guess2: #{GameLogic.card_at_position(memory, guess2).word}\n")
                  GameLogic.reset_card_positions_visibility(memory, guess1, guess2)
       end
       guess(memory, guess_count + 1)
@@ -29,11 +33,17 @@ defmodule Memory do
   def guess_word(memory) do
     guess = IO.gets("Guess pair: ")
             |> String.trim()
-    card = GameLogic.card_at_position(memory, guess)
-    if(card.visible == true) do
-      IO.puts("You have chosen a position which is already visible or does not exist.. Try again")
-      guess_word(memory)
+
+    case String.match?(guess, ~r{([A-Z][1-6])}) do
+      false -> IO.puts("Format has to be [A-F][1-6] ex: A1. Try again..")
+               guess_word(memory)
+      _ -> case already_visible_card?(memory, guess) do
+             true -> IO.puts("You have chosen a position which is already visible or does not exist.. Try again")
+                     guess_word(memory)
+             _ -> guess
+           end
     end
-    guess
   end
+
+  def already_visible_card?(memory, guess), do: GameLogic.card_at_position(memory, guess).visible
 end

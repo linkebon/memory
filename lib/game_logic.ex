@@ -1,4 +1,13 @@
 defmodule GameLogic do
+  @moduledoc """
+  Documentation for `GameLogic`.
+  Module contains the game logic for running memory game
+  """
+
+  @doc """
+  Generates a memory with the structure:
+  %{'A' => [Card], 'B' => [Card] ... }
+  """
   def generate_memory(words_filename) do
     words_list = words_filename
                  |> File.read!()
@@ -18,11 +27,11 @@ defmodule GameLogic do
       do: card_at_position(memory, position1).word == card_at_position(memory, position2).word
 
   def print_memory(memory) do
-    IO.puts("\n---------------------")
+    IO.puts("\n-------------------------")
     for {letter, cards_list} <- memory do
       IO.puts("#{letter} #{Enum.join(Enum.map(cards_list, &card_word_as_string/1), " ")}")
     end
-    IO.puts("---------------------\n")
+    IO.puts("-------------------------\n")
   end
 
   def card_word_as_string(card) do
@@ -69,9 +78,8 @@ defmodule GameLogic do
   end
 
   def reset_card_positions_visibility(memory, pair_pos1, pair_pos2) do
-    memory = update_card_at_pos_visible(memory, pair_pos1, false)
-    memory = update_card_at_pos_visible(memory, pair_pos2, false)
-    memory
+    update_card_at_pos_visible(memory, pair_pos1, false)
+    |> update_card_at_pos_visible(pair_pos2, false)
   end
 
   def game_finished?(memory) do

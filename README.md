@@ -1,14 +1,10 @@
 # Memory game
 
 ## Requirements
-* elixir 1.10.4 or newer
+* elixir 1.10 or newer
 
 ## Run game
 Compile game by running following in shell:
-* `iex`
-* `c "card.ex"`
-* `c "game_logic.ex"`
-* `c "memory.ex"`
-
+* `iex -S mix`
 Run game:
-* `Memory.run_memory`
+* `Memory.start`
