@@ -11,6 +11,8 @@ defmodule Memory do
 
   def guess(memory, guess_count \\ 1) do
     if(GameLogic.game_finished?(memory)) do
+      highscore_file = File.open!("highscore.txt", [:append])
+      IO.write(highscore_file, "\nHighscore: #{guess_count}")
       IO.puts("*** Memory finished!! You finished in #{guess_count} guesses! ***")
     else
       GameLogic.print_memory(memory)
